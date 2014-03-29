@@ -23,6 +23,7 @@ public class DaoGenerator {
         book.addIdProperty();
         book.addStringProperty("title");
         book.addStringProperty("author");
+        book.addStringProperty("publisher");
         book.addStringProperty("thumbnail");
         book.addStringProperty("isbn");
 

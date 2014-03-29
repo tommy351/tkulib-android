@@ -1,5 +1,6 @@
 package tw.tku.tkulib.app;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -31,7 +33,7 @@ import tw.tku.tkulib.util.NetworkHelper;
 /**
  * Created by SkyArrow on 2014/3/29.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements AdapterView.OnItemClickListener {
     public static final String TAG = "SearchFragment";
 
     public static final String EXTRA_KEYWORD = "keyword";
@@ -64,6 +66,7 @@ public class SearchFragment extends Fragment {
         adapter = new SearchListAdapter(getActivity(), bookList);
         task = new GetBookListTask(keyword);
 
+        listView.setOnItemClickListener(this);
         listView.setAdapter(adapter);
         getBookList(1);
 
@@ -105,6 +108,19 @@ public class SearchFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Book book = (Book) adapterView.getAdapter().getItem(i);
+
+        if (book == null) return;
+
+        Intent intent = new Intent(getActivity(), BookActivity.class);
+
+        intent.putExtra(BookActivity.EXTRA_BOOK, book.getId());
+        intent.putExtra(BookActivity.EXTRA_TITLE, book.getTitle());
+        startActivity(intent);
+    }
+
     private class GetBookListTask extends AsyncTask<Integer, Integer, List<Book>> {
         private String keyword;
 
@@ -132,8 +148,8 @@ public class SearchFragment extends Fragment {
                     Book book = new Book();
 
                     book.setId(Long.parseLong(element.getElementsByClass("unapi-id").attr("title").substring(6)));
-                    book.setAuthor(element.getElementsByClass("author").text());
-                    book.setTitle(element.getElementsByClass("title").text());
+                    book.setAuthor(element.getElementsByClass("author").html());
+                    book.setTitle(element.getElementsByClass("title").html());
 
                     list.add(book);
                 }

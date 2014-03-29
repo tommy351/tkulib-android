@@ -26,8 +26,9 @@ public class BookDao extends AbstractDao<Book, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Title = new Property(1, String.class, "title", false, "TITLE");
         public final static Property Author = new Property(2, String.class, "author", false, "AUTHOR");
-        public final static Property Thumbnail = new Property(3, String.class, "thumbnail", false, "THUMBNAIL");
-        public final static Property Isbn = new Property(4, String.class, "isbn", false, "ISBN");
+        public final static Property Publisher = new Property(3, String.class, "publisher", false, "PUBLISHER");
+        public final static Property Thumbnail = new Property(4, String.class, "thumbnail", false, "THUMBNAIL");
+        public final static Property Isbn = new Property(5, String.class, "isbn", false, "ISBN");
     };
 
 
@@ -46,8 +47,9 @@ public class BookDao extends AbstractDao<Book, Long> {
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'TITLE' TEXT," + // 1: title
                 "'AUTHOR' TEXT," + // 2: author
-                "'THUMBNAIL' TEXT," + // 3: thumbnail
-                "'ISBN' TEXT);"); // 4: isbn
+                "'PUBLISHER' TEXT," + // 3: publisher
+                "'THUMBNAIL' TEXT," + // 4: thumbnail
+                "'ISBN' TEXT);"); // 5: isbn
     }
 
     /** Drops the underlying database table. */
@@ -76,14 +78,19 @@ public class BookDao extends AbstractDao<Book, Long> {
             stmt.bindString(3, author);
         }
  
+        String publisher = entity.getPublisher();
+        if (publisher != null) {
+            stmt.bindString(4, publisher);
+        }
+ 
         String thumbnail = entity.getThumbnail();
         if (thumbnail != null) {
-            stmt.bindString(4, thumbnail);
+            stmt.bindString(5, thumbnail);
         }
  
         String isbn = entity.getIsbn();
         if (isbn != null) {
-            stmt.bindString(5, isbn);
+            stmt.bindString(6, isbn);
         }
     }
 
@@ -100,8 +107,9 @@ public class BookDao extends AbstractDao<Book, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // title
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // author
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // thumbnail
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // isbn
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // publisher
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // thumbnail
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // isbn
         );
         return entity;
     }
@@ -112,8 +120,9 @@ public class BookDao extends AbstractDao<Book, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setTitle(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setAuthor(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setThumbnail(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setIsbn(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setPublisher(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setThumbnail(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setIsbn(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
      }
     
     /** @inheritdoc */

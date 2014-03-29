@@ -9,6 +9,7 @@ public class Book extends BookBase  {
     private Long id;
     private String title;
     private String author;
+    private String publisher;
     private String thumbnail;
     private String isbn;
 
@@ -19,10 +20,11 @@ public class Book extends BookBase  {
         this.id = id;
     }
 
-    public Book(Long id, String title, String author, String thumbnail, String isbn) {
+    public Book(Long id, String title, String author, String publisher, String thumbnail, String isbn) {
         this.id = id;
         this.title = title;
         this.author = author;
+        this.publisher = publisher;
         this.thumbnail = thumbnail;
         this.isbn = isbn;
     }
@@ -49,6 +51,14 @@ public class Book extends BookBase  {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
     public String getThumbnail() {

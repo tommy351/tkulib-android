@@ -9,6 +9,10 @@ public abstract class BookBase {
     public abstract Long getId();
 
     public String getUrl() {
-        return String.format(Constant.BOOK_URL, getId());
+        return getUrl(getId());
+    }
+
+    public static String getUrl(long id) {
+        return String.format(Constant.BOOK_URL, id);
     }
 }

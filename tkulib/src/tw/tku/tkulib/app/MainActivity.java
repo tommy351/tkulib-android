@@ -13,6 +13,8 @@ import butterknife.InjectView;
 import tw.tku.tkulib.R;
 
 public class MainActivity extends FragmentActivity implements SearchView.OnQueryTextListener {
+    public static final String EXTRA_KEYWORD = "keyword";
+
     @InjectView(R.id.search)
     SearchView searchView;
 
@@ -25,6 +27,19 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         ButterKnife.inject(this);
 
         searchView.setOnQueryTextListener(this);
+
+        if (savedInstanceState != null) {
+            String keyword = savedInstanceState.getString(EXTRA_KEYWORD, "");
+
+            searchView.setQuery(keyword, true);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(EXTRA_KEYWORD, searchView.getQuery().toString());
     }
 
     @Override
@@ -48,21 +63,9 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     public boolean onQueryTextSubmit(String s) {
         searchView.clearFocus();
 
-        if (s == lastQuery) {
-            return true;
+        if (s != lastQuery) {
+            search(s);
         }
-
-        lastQuery = s;
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment fragment = new SearchFragment();
-        Bundle args = new Bundle();
-
-        args.putString(SearchFragment.EXTRA_KEYWORD, s);
-
-        fragment.setArguments(args);
-        ft.replace(R.id.container, fragment, SearchFragment.TAG);
-        ft.commit();
 
         return true;
     }
@@ -74,5 +77,19 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         }
 
         return true;
+    }
+
+    private void search(String keyword) {
+        lastQuery = keyword;
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = new SearchFragment();
+        Bundle args = new Bundle();
+
+        args.putString(SearchFragment.EXTRA_KEYWORD, keyword);
+
+        fragment.setArguments(args);
+        ft.replace(R.id.container, fragment, SearchFragment.TAG);
+        ft.commit();
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import tw.tku.tkulib.model.BookBase.DaoMaster;
+import tw.tku.tkulib.model.DaoMaster;
 
 /**
  * Created by SkyArrow on 2014/3/29.
