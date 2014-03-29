@@ -52,7 +52,6 @@ public class MainListAdapter extends BookListAdapter {
         @InjectView(R.id.title)
         TextView title;
 
-
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }

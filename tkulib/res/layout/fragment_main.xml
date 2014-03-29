@@ -18,12 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginBottom="@dimen/margin_medium"/>
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:numColumns="3"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/history"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <TextView
             android:text="@string/section_history"
             android:textSize="@dimen/text_size_medium"
@@ -35,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:numColumns="3"/>
     </LinearLayout>
 </LinearLayout>
