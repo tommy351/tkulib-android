@@ -30,6 +30,7 @@ public class BookDao extends AbstractDao<Book, Long> {
         public final static Property Thumbnail = new Property(4, String.class, "thumbnail", false, "THUMBNAIL");
         public final static Property Isbn = new Property(5, String.class, "isbn", false, "ISBN");
         public final static Property Starred = new Property(6, Boolean.class, "starred", false, "STARRED");
+        public final static Property LastRead = new Property(7, java.util.Date.class, "lastRead", false, "LAST_READ");
     };
 
 
@@ -51,7 +52,8 @@ public class BookDao extends AbstractDao<Book, Long> {
                 "'PUBLISHER' TEXT," + // 3: publisher
                 "'THUMBNAIL' TEXT," + // 4: thumbnail
                 "'ISBN' TEXT," + // 5: isbn
-                "'STARRED' INTEGER);"); // 6: starred
+                "'STARRED' INTEGER," + // 6: starred
+                "'LAST_READ' INTEGER);"); // 7: lastRead
     }
 
     /** Drops the underlying database table. */
@@ -99,6 +101,11 @@ public class BookDao extends AbstractDao<Book, Long> {
         if (starred != null) {
             stmt.bindLong(7, starred ? 1l: 0l);
         }
+ 
+        java.util.Date lastRead = entity.getLastRead();
+        if (lastRead != null) {
+            stmt.bindLong(8, lastRead.getTime());
+        }
     }
 
     /** @inheritdoc */
@@ -117,7 +124,8 @@ public class BookDao extends AbstractDao<Book, Long> {
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // publisher
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // thumbnail
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // isbn
-            cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0 // starred
+            cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0, // starred
+            cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)) // lastRead
         );
         return entity;
     }
@@ -132,6 +140,7 @@ public class BookDao extends AbstractDao<Book, Long> {
         entity.setThumbnail(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setIsbn(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setStarred(cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0);
+        entity.setLastRead(cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)));
      }
     
     /** @inheritdoc */

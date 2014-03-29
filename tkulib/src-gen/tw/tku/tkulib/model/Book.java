@@ -13,6 +13,7 @@ public class Book extends BookBase  {
     private String thumbnail;
     private String isbn;
     private Boolean starred;
+    private java.util.Date lastRead;
 
     public Book() {
     }
@@ -21,7 +22,7 @@ public class Book extends BookBase  {
         this.id = id;
     }
 
-    public Book(Long id, String title, String author, String publisher, String thumbnail, String isbn, Boolean starred) {
+    public Book(Long id, String title, String author, String publisher, String thumbnail, String isbn, Boolean starred, java.util.Date lastRead) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -29,6 +30,7 @@ public class Book extends BookBase  {
         this.thumbnail = thumbnail;
         this.isbn = isbn;
         this.starred = starred;
+        this.lastRead = lastRead;
     }
 
     public Long getId() {
@@ -85,6 +87,14 @@ public class Book extends BookBase  {
 
     public void setStarred(Boolean starred) {
         this.starred = starred;
+    }
+
+    public java.util.Date getLastRead() {
+        return lastRead;
+    }
+
+    public void setLastRead(java.util.Date lastRead) {
+        this.lastRead = lastRead;
     }
 
 }

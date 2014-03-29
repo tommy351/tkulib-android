@@ -43,6 +43,8 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         ButterKnife.inject(this);
 
         searchView.setOnQueryTextListener(this);
+        searchView.clearFocus();
+        showMainFragment();
 
         if (savedInstanceState != null) {
             String keyword = savedInstanceState.getString(EXTRA_KEYWORD, "");
@@ -89,7 +91,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     @Override
     public boolean onQueryTextChange(String s) {
         if (s == "") {
-            // TODO handle empty string
+            showMainFragment();
         }
 
         return true;
@@ -106,6 +108,14 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
 
         fragment.setArguments(args);
         ft.replace(R.id.container, fragment, SearchFragment.TAG);
+        ft.commit();
+    }
+
+    private void showMainFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = new MainFragment();
+
+        ft.replace(R.id.container, fragment, MainFragment.TAG);
         ft.commit();
     }
 

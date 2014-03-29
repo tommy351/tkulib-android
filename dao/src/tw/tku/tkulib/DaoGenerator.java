@@ -27,6 +27,7 @@ public class DaoGenerator {
         book.addStringProperty("thumbnail");
         book.addStringProperty("isbn");
         book.addBooleanProperty("starred");
+        book.addDateProperty("lastRead");
 
         // Generate DAO
         File file = new File(DB_PATH);
