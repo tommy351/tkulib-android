@@ -6,17 +6,33 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import tw.tku.tkulib.R;
+import tw.tku.tkulib.widget.InfiniteScrollListener;
+import tw.tku.tkulib.widget.ObservableScrollView;
 
-public class MainActivity extends FragmentActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends FragmentActivity implements SearchView.OnQueryTextListener,
+        ObservableScrollView.OnScrollToEndListener {
+
     public static final String EXTRA_KEYWORD = "keyword";
 
     @InjectView(R.id.search)
     SearchView searchView;
+
+    @InjectView(R.id.scroll_view)
+    ObservableScrollView scrollView;
+
+    @InjectView(R.id.overflow)
+    View overflowBtn;
 
     private String lastQuery;
 
@@ -91,5 +107,18 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         fragment.setArguments(args);
         ft.replace(R.id.container, fragment, SearchFragment.TAG);
         ft.commit();
+    }
+
+    @Override
+    public void onScrollToEnd(int page) {
+
+    }
+
+    @OnClick(R.id.overflow)
+    public void showPopupMenu() {
+        PopupMenu popupMenu = new PopupMenu(this, overflowBtn);
+
+        popupMenu.getMenuInflater().inflate(R.menu.main, popupMenu.getMenu());
+        popupMenu.show();
     }
 }

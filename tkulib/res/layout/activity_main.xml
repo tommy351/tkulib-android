@@ -1,19 +1,41 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<tw.tku.tkulib.widget.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <LinearLayout
+    android:layout_height="match_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <SearchView
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/margin_huge"/>
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/search"
-            android:queryHint="@string/search_hint"
-            android:iconifiedByDefault="false"/>
-    </LinearLayout>
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+            android:background="@drawable/bg_card"
+            android:layout_alignParentTop="true">
+            <SearchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/search"
+                android:queryHint="@string/search_hint"
+                android:iconifiedByDefault="false"
+                android:layout_toLeftOf="@+id/overflow"/>
+            <ImageButton
+                android:id="@+id/overflow"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_overflow"
+                android:background="@android:color/transparent"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:paddingRight="@dimen/margin_small"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</tw.tku.tkulib.widget.ObservableScrollView>

@@ -9,8 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,6 +32,7 @@ import tw.tku.tkulib.model.Book;
 import tw.tku.tkulib.util.HttpRequestHelper;
 import tw.tku.tkulib.util.L;
 import tw.tku.tkulib.util.NetworkHelper;
+import tw.tku.tkulib.widget.InfiniteScrollListener;
 
 /**
  * Created by SkyArrow on 2014/3/29.
@@ -44,12 +48,15 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     @InjectView(R.id.list)
     ListView listView;
 
-    @InjectView(R.id.loading)
-    ProgressBar progressBar;
-
     private SearchListAdapter adapter;
     private List<Book> bookList;
     private GetBookListTask task;
+    private int currentPage;
+
+    private View footer;
+    private ProgressBar footerProgressBar;
+    private TextView footerError;
+    private Button footerRetryBtn;
 
     private NetworkHelper network;
 
@@ -66,8 +73,17 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         adapter = new SearchListAdapter(getActivity(), bookList);
         task = new GetBookListTask(keyword);
 
+        footer = inflater.inflate(R.layout.book_list_footer, null);
+        footerProgressBar = (ProgressBar) footer.findViewById(R.id.loading);
+        footerError = (TextView) footer.findViewById(R.id.error);
+        footerRetryBtn = (Button) footer.findViewById(R.id.retry);
+        footerRetryBtn.setOnClickListener(onRetryBtnClick);
+
         listView.setOnItemClickListener(this);
+        listView.addFooterView(footer);
+        listView.setFooterDividersEnabled(false);
         listView.setAdapter(adapter);
+
         getBookList(1);
 
         if (savedInstanceState != null) {
@@ -81,7 +97,9 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     public void onDestroyView() {
         super.onDestroyView();
 
-        task.cancel(true);
+        if (task != null && !task.isCancelled()) {
+            task.cancel(true);
+        }
     }
 
     @Override
@@ -102,9 +120,11 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
     private void getBookList(int page) {
         if (network.isAvailable()) {
+//            task = new GetBookListTask();
             task.execute(page);
         } else {
-            // TODO network handling
+            currentPage = page;
+            showError(R.string.error_network, true);
         }
     }
 
@@ -120,10 +140,21 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         startActivity(intent);
     }
 
+    private void showError(int res, boolean retry) {
+        footerError.setVisibility(View.VISIBLE);
+        footerError.setText(res);
+
+        if (retry) footerRetryBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void setLoading(boolean loading) {
+        footerProgressBar.setVisibility(loading ? View.VISIBLE : View.INVISIBLE);
+    }
+
     private class GetBookListTask extends AsyncTask<Integer, Integer, List<Book>> {
         private String keyword;
 
-        public GetBookListTask(String keyword) {
+        private GetBookListTask(String keyword) {
             this.keyword = keyword;
         }
 
@@ -163,19 +194,28 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
         @Override
         protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
+            setLoading(true);
         }
 
         @Override
         protected void onPostExecute(List<Book> books) {
-            progressBar.setVisibility(View.GONE);
-
             if (books == null) {
-                // TODO error handling
+                showError(R.string.error_book_not_found, false);
             } else {
                 bookList.addAll(books);
                 adapter.notifyDataSetChanged();
             }
+
+            setLoading(false);
         }
     }
+
+    private View.OnClickListener onRetryBtnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            footerError.setVisibility(View.GONE);
+            footerRetryBtn.setVisibility(View.GONE);
+            getBookList(currentPage);
+        }
+    };
 }

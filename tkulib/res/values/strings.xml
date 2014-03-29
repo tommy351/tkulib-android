@@ -6,13 +6,20 @@
     <string name="menu_share">Share</string>
     <string name="menu_star">Star</string>
     <string name="menu_unstar">Unstar</string>
+    <string name="menu_advanced_search">Advanced search</string>
 
     <string name="search_hint">Search</string>
 
     <string name="retry">Retry</string>
+    <string name="more">More&#8230;</string>
 
     <string name="notification_starred">Book starred</string>
     <string name="notification_unstarred">Book unstarred</string>
 
     <string name="section_location">Location</string>
+    <string name="section_starred">Starred</string>
+    <string name="section_history">History</string>
+
+    <string name="error_network">No network connection</string>
+    <string name="error_book_not_found">Book not found</string>
 </resources>
