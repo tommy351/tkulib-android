@@ -29,6 +29,7 @@ public class BookDao extends AbstractDao<Book, Long> {
         public final static Property Publisher = new Property(3, String.class, "publisher", false, "PUBLISHER");
         public final static Property Thumbnail = new Property(4, String.class, "thumbnail", false, "THUMBNAIL");
         public final static Property Isbn = new Property(5, String.class, "isbn", false, "ISBN");
+        public final static Property Starred = new Property(6, Boolean.class, "starred", false, "STARRED");
     };
 
 
@@ -49,7 +50,8 @@ public class BookDao extends AbstractDao<Book, Long> {
                 "'AUTHOR' TEXT," + // 2: author
                 "'PUBLISHER' TEXT," + // 3: publisher
                 "'THUMBNAIL' TEXT," + // 4: thumbnail
-                "'ISBN' TEXT);"); // 5: isbn
+                "'ISBN' TEXT," + // 5: isbn
+                "'STARRED' INTEGER);"); // 6: starred
     }
 
     /** Drops the underlying database table. */
@@ -92,6 +94,11 @@ public class BookDao extends AbstractDao<Book, Long> {
         if (isbn != null) {
             stmt.bindString(6, isbn);
         }
+ 
+        Boolean starred = entity.getStarred();
+        if (starred != null) {
+            stmt.bindLong(7, starred ? 1l: 0l);
+        }
     }
 
     /** @inheritdoc */
@@ -109,7 +116,8 @@ public class BookDao extends AbstractDao<Book, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // author
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // publisher
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // thumbnail
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // isbn
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // isbn
+            cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0 // starred
         );
         return entity;
     }
@@ -123,6 +131,7 @@ public class BookDao extends AbstractDao<Book, Long> {
         entity.setPublisher(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setThumbnail(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setIsbn(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setStarred(cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0);
      }
     
     /** @inheritdoc */

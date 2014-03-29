@@ -12,6 +12,7 @@ public class Book extends BookBase  {
     private String publisher;
     private String thumbnail;
     private String isbn;
+    private Boolean starred;
 
     public Book() {
     }
@@ -20,13 +21,14 @@ public class Book extends BookBase  {
         this.id = id;
     }
 
-    public Book(Long id, String title, String author, String publisher, String thumbnail, String isbn) {
+    public Book(Long id, String title, String author, String publisher, String thumbnail, String isbn, Boolean starred) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.thumbnail = thumbnail;
         this.isbn = isbn;
+        this.starred = starred;
     }
 
     public Long getId() {
@@ -75,6 +77,14 @@ public class Book extends BookBase  {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public Boolean getStarred() {
+        return starred;
+    }
+
+    public void setStarred(Boolean starred) {
+        this.starred = starred;
     }
 
 }

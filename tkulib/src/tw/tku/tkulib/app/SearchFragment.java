@@ -117,7 +117,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         Intent intent = new Intent(getActivity(), BookActivity.class);
 
         intent.putExtra(BookActivity.EXTRA_BOOK, book.getId());
-        intent.putExtra(BookActivity.EXTRA_TITLE, book.getTitle());
         startActivity(intent);
     }
 
