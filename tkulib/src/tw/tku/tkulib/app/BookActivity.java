@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -208,7 +209,7 @@ public class BookActivity extends FragmentActivity {
 
     private void showTextView(TextView textView, String str) {
         if (str != null && !str.isEmpty()) {
-            textView.setText(str);
+            textView.setText(Html.fromHtml(str).toString());
         } else {
             textView.setVisibility(View.GONE);
         }

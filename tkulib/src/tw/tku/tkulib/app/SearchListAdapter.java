@@ -1,6 +1,7 @@
 package tw.tku.tkulib.app;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class SearchListAdapter extends BookListAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.title.setText(book.getTitle());
+        holder.title.setText(Html.fromHtml(book.getTitle()).toString());
 
         return view;
     }
