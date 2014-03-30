@@ -31,6 +31,7 @@ import butterknife.InjectView;
 import tw.tku.tkulib.Constant;
 import tw.tku.tkulib.R;
 import tw.tku.tkulib.model.Book;
+import tw.tku.tkulib.util.HttpRequestHelper;
 import tw.tku.tkulib.util.L;
 import tw.tku.tkulib.util.NetworkHelper;
 import tw.tku.tkulib.widget.ObservableScrollView;

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">淡江圖搜館</string>
+
+    <string name="menu_settings">設定</string>
+    <string name="menu_share">分享</string>
+    <string name="menu_star">收藏</string>
+    <string name="menu_unstar">取消收藏</string>
+    <string name="menu_advanced_search">進階搜尋</string>
+
+    <string name="search_hint">搜尋</string>
+
+    <string name="retry">重試</string>
+    <string name="more">更多&#8230;</string>
+    <string name="ok">確定</string>
+    <string name="cancel">取消</string>
+
+    <string name="notification_starred">已收藏</string>
+    <string name="notification_unstarred">已取消收藏</string>
+
+    <string name="section_location">位置</string>
+    <string name="section_starred">收藏</string>
+    <string name="section_history">歷史</string>
+    <string name="section_terms">關鍵字</string>
+    <string name="section_filters">過濾</string>
+
+    <string name="advanced_search">進階搜尋</string>
+
+    <string name="field_any">任何欄位</string>
+    <string name="field_author">作者</string>
+    <string name="field_title">書刊名</string>
+    <string name="field_subject">標題</string>
+    <string name="field_publisher">出版社</string>
+    <string name="field_isbn">ISBN</string>
+    <string name="field_issn">ISSN</string>
+
+    <string name="match_must">包含所有的字：</string>
+    <string name="match_phrase">完整字句：</string>
+    <string name="match_should">至少包括一個字：</string>
+    <string name="match_not">不包括：</string>
+
+    <string name="error_network">沒有網路連接</string>
+    <string name="error_book_not_found">找不到書籍</string>
+    <string name="error_other">糟糕！發生錯誤！</string>
+
+    <string name="settings">設定</string>
+
+    <string name="pref_advanced_title">進階</string>
+
+    <string name="pref_clear_history_title">清除歷史</string>
+
+    <string name="pref_about_title">關於</string>
+
+    <string name="pref_version_title">版本</string>
+
+    <string name="clear_history_title">清除歷史</string>
+    <string name="clear_history_msg">您確定要清除歷史嗎？</string>
+</resources>

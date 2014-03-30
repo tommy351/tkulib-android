@@ -107,10 +107,7 @@ public class MainActivity extends FragmentActivity {
 
         args.putString(SearchFragment.EXTRA_KEYWORD, keyword);
 
-        scrollView.setEnd(false);
-        scrollView.setLoading(true);
-        scrollView.setPage(0);
-
+        resetScrollView();
         fragment.setArguments(args);
         ft.replace(R.id.container, fragment, SearchFragment.TAG);
         ft.commit();
@@ -120,7 +117,7 @@ public class MainActivity extends FragmentActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment fragment = new MainFragment();
 
-        scrollView.setEnd(true);
+        resetScrollView();
         ft.replace(R.id.container, fragment, MainFragment.TAG);
         ft.commit();
     }
@@ -171,5 +168,12 @@ public class MainActivity extends FragmentActivity {
         Intent intent = new Intent(this, PrefActivity.class);
 
         startActivity(intent);
+    }
+
+    private void resetScrollView() {
+        scrollView.setEnd(false);
+        scrollView.setLoading(true);
+        scrollView.setPage(0);
+        scrollView.scrollTo(0, 0);
     }
 }
