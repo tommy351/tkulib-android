@@ -1,18 +1,27 @@
 package tw.tku.tkulib.app;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -24,19 +33,20 @@ import tw.tku.tkulib.util.L;
 import tw.tku.tkulib.widget.InfiniteScrollListener;
 import tw.tku.tkulib.widget.ObservableScrollView;
 
-public class MainActivity extends FragmentActivity implements SearchView.OnQueryTextListener,
-        ObservableScrollView.OnScrollToEndListener {
-
+public class MainActivity extends FragmentActivity implements ObservableScrollView.OnScrollToEndListener {
     public static final String EXTRA_KEYWORD = "keyword";
 
     @InjectView(R.id.search)
-    SearchView searchView;
+    EditText searchView;
 
     @InjectView(R.id.scroll_view)
     ObservableScrollView scrollView;
 
     @InjectView(R.id.overflow)
-    View overflowBtn;
+    ImageButton overflowBtn;
+
+    @InjectView(R.id.cancel)
+    ImageButton cancelBtn;
 
     private String lastQuery;
 
@@ -46,13 +56,29 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        searchView.setOnQueryTextListener(this);
+        searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String str = textView.getText().toString();
+
+                    if (str.length() > 0) {
+                        search(str);
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
         showMainFragment();
 
         if (savedInstanceState != null) {
             String keyword = savedInstanceState.getString(EXTRA_KEYWORD, "");
 
-            searchView.setQuery(keyword, true);
+            searchView.setText(keyword);
+            search(keyword);
         }
     }
 
@@ -60,27 +86,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putString(EXTRA_KEYWORD, searchView.getQuery().toString());
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-        searchView.clearFocus();
-
-        if (s != lastQuery) {
-            search(s);
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-        if (s == "") {
-            showMainFragment();
-        }
-
-        return true;
+        outState.putString(EXTRA_KEYWORD, searchView.getText().toString());
     }
 
     @Override
@@ -94,6 +100,15 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     }
 
     private void search(String keyword) {
+        cancelBtn.setVisibility(View.VISIBLE);
+        overflowBtn.setVisibility(View.GONE);
+
+        // Hide soft keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+
+        if (keyword == lastQuery) return;
+
         lastQuery = keyword;
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -132,6 +147,14 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         popupMenu.getMenuInflater().inflate(R.menu.main, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(onMenuItemClickListener);
         popupMenu.show();
+    }
+
+    @OnClick(R.id.cancel)
+    public void onCancelBtnClick() {
+        searchView.setText("");
+        cancelBtn.setVisibility(View.GONE);
+        overflowBtn.setVisibility(View.VISIBLE);
+        showMainFragment();
     }
 
     private PopupMenu.OnMenuItemClickListener onMenuItemClickListener = new PopupMenu.OnMenuItemClickListener() {

@@ -80,6 +80,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     private void showHistoryList() {
         QueryBuilder<Book> qb = bookDao.queryBuilder();
         qb.orderDesc(BookDao.Properties.LastRead);
+        qb.limit(20);
         List<Book> bookList = qb.list();
 
         if (bookList.size() == 0) {

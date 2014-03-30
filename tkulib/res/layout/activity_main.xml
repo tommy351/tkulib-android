@@ -21,21 +21,40 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin">
-        <SearchView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/search"
-            android:queryHint="@string/search_hint"
-            android:iconifiedByDefault="false"
-            android:layout_toLeftOf="@+id/overflow"/>
-        <ImageButton
-            android:id="@+id/overflow"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_overflow"
+            android:hint="@string/search_hint"
             android:background="@android:color/transparent"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:layout_toLeftOf="@+id/search_btn"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"/>
+        <RelativeLayout
+            android:id="@+id/search_btn"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:paddingRight="@dimen/margin_small"/>
+            android:layout_alignParentRight="true">
+            <ImageButton
+                android:id="@+id/overflow"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_overflow"
+                android:background="@android:color/transparent"
+                android:paddingRight="@dimen/margin_small"/>
+            <ImageButton
+                android:id="@+id/cancel"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_cancel"
+                android:background="@android:color/transparent"
+                android:paddingRight="@dimen/margin_small"
+                android:visibility="gone"/>
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
