@@ -33,7 +33,7 @@ import tw.tku.tkulib.util.L;
 import tw.tku.tkulib.widget.InfiniteScrollListener;
 import tw.tku.tkulib.widget.ObservableScrollView;
 
-public class MainActivity extends FragmentActivity implements ObservableScrollView.OnScrollToEndListener {
+public class MainActivity extends FragmentActivity {
     public static final String EXTRA_KEYWORD = "keyword";
 
     @InjectView(R.id.search)
@@ -103,7 +103,8 @@ public class MainActivity extends FragmentActivity implements ObservableScrollVi
         cancelBtn.setVisibility(View.VISIBLE);
         overflowBtn.setVisibility(View.GONE);
 
-        // Hide soft keyboard
+        // Hide soft keyboard: http://stackoverflow.com/a/18415233
+        searchView.clearFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 
@@ -133,11 +134,6 @@ public class MainActivity extends FragmentActivity implements ObservableScrollVi
         scrollView.setEnd(true);
         ft.replace(R.id.container, fragment, MainFragment.TAG);
         ft.commit();
-    }
-
-    @Override
-    public void onScrollToEnd(int page) {
-        EventBus.getDefault().post(new MainScrollEvent(page));
     }
 
     @OnClick(R.id.overflow)

@@ -43,7 +43,7 @@ import tw.tku.tkulib.widget.ObservableScrollView;
 /**
  * Created by SkyArrow on 2014/3/29.
  */
-public class SearchFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class SearchFragment extends Fragment implements AdapterView.OnItemClickListener, ObservableScrollView.OnScrollToEndListener {
     public static final String TAG = "SearchFragment";
 
     public static final String EXTRA_KEYWORD = "keyword";
@@ -58,6 +58,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     private List<Book> bookList;
     private GetBookListTask task;
     private int currentPage;
+    private String keyword;
 
     private View footer;
     private ProgressBar footerProgressBar;
@@ -70,15 +71,13 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.inject(this, view);
-        EventBus.getDefault().register(this);
 
         Bundle args = getArguments();
-        String keyword = args.getString(EXTRA_KEYWORD);
+        keyword = args.getString(EXTRA_KEYWORD);
         network = NetworkHelper.getInstance(getActivity());
 
         bookList = new ArrayList<Book>();
         adapter = new SearchListAdapter(getActivity(), bookList);
-        task = new GetBookListTask(keyword);
 
         footer = inflater.inflate(R.layout.book_list_footer, null);
         footerProgressBar = (ProgressBar) footer.findViewById(R.id.loading);
@@ -90,6 +89,9 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         listView.addFooterView(footer);
         listView.setFooterDividersEnabled(false);
         listView.setAdapter(adapter);
+
+        getScrollView().setLoading(true);
+        getScrollView().setOnScrollToEndListener(this);
 
         getBookList(1);
 
@@ -103,7 +105,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        EventBus.getDefault().unregister(this);
+        getScrollView().setOnScrollToEndListener(null);
 
         if (task != null && !task.isCancelled()) {
             task.cancel(true);
@@ -128,6 +130,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
     private void getBookList(int page) {
         if (network.isAvailable()) {
+            task = new GetBookListTask();
             task.execute(page);
         } else {
             currentPage = page;
@@ -145,10 +148,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
         intent.putExtra(BookActivity.EXTRA_BOOK, book.getId());
         startActivity(intent);
-    }
-
-    public void onEvent(MainScrollEvent event) {
-        //getBookList(event.getPage() + 1);
     }
 
     private ObservableScrollView getScrollView() {
@@ -170,13 +169,12 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         footerProgressBar.setVisibility(loading ? View.VISIBLE : View.INVISIBLE);
     }
 
+    @Override
+    public void onScrollToEnd(int page) {
+        getBookList(page);
+    }
+
     private class GetBookListTask extends AsyncTask<Integer, Integer, List<Book>> {
-        private String keyword;
-
-        private GetBookListTask(String keyword) {
-            this.keyword = keyword;
-        }
-
         @Override
         protected List<Book> doInBackground(Integer... integers) {
             int page = integers[0];

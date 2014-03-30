@@ -24,7 +24,6 @@ public class ObservableScrollView extends ScrollView {
         super(context, attrs, defStyle);
     }
 
-    private int threshold = 20;
     private int page = 0;
     private boolean isEnd = false;
     private boolean isLoading = false;
@@ -32,14 +31,6 @@ public class ObservableScrollView extends ScrollView {
 
     public interface OnScrollToEndListener {
         void onScrollToEnd(int page);
-    }
-
-    public int getThreshold() {
-        return threshold;
-    }
-
-    public void setThreshold(int threshold) {
-        this.threshold = threshold;
     }
 
     public int getPage() {
@@ -77,7 +68,7 @@ public class ObservableScrollView extends ScrollView {
         View view = getChildAt(getChildCount() - 1);
         int diff = view.getBottom() - (getHeight() + getScrollY());
 
-        if (onScrollToEndListener != null && !isEnd && !isLoading && diff > threshold) {
+        if (onScrollToEndListener != null && !isEnd && !isLoading && diff == 0) {
             onScrollToEndListener.onScrollToEnd(++page);
         }
     }
