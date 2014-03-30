@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,15 +28,11 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 import tw.tku.tkulib.Constant;
 import tw.tku.tkulib.R;
-import tw.tku.tkulib.event.MainScrollEvent;
 import tw.tku.tkulib.model.Book;
-import tw.tku.tkulib.util.HttpRequestHelper;
 import tw.tku.tkulib.util.L;
 import tw.tku.tkulib.util.NetworkHelper;
-import tw.tku.tkulib.widget.InfiniteScrollListener;
 import tw.tku.tkulib.widget.ObservableScrollView;
 
 /**

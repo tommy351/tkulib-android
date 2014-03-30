@@ -45,14 +45,14 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@drawable/ic_overflow"
-                android:background="@android:color/transparent"
+                android:background="?android:selectableItemBackground"
                 android:paddingRight="@dimen/margin_small"/>
             <ImageButton
                 android:id="@+id/cancel"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@drawable/ic_cancel"
-                android:background="@android:color/transparent"
+                android:background="?android:selectableItemBackground"
                 android:paddingRight="@dimen/margin_small"
                 android:visibility="gone"/>
         </RelativeLayout>

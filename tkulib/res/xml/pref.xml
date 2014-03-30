@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Advanced -->
+    <PreferenceCategory
+        android:title="@string/pref_advanced_title">
+        <PreferenceScreen
+            android:key="@string/pref_clear_history"
+            android:title="@string/pref_clear_history_title"/>
+    </PreferenceCategory>
+    <!-- About -->
+    <PreferenceCategory
+        android:title="@string/pref_about_title">
+        <PreferenceScreen
+            android:key="@string/pref_version"
+            android:title="@string/pref_version_title"/>
+    </PreferenceCategory>
+</PreferenceScreen>

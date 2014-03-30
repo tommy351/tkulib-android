@@ -29,6 +29,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".app.MainActivity"/>
         </activity>
+        <activity
+            android:name=".app.AdvSearchActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/advanced_search">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".app.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".app.PrefActivity"
+            android:label="@string/settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".app.MainActivity"/>
+        </activity>
         <provider
             android:authorities="tw.tku.tkulib.provider.SearchSuggestionProvider"
             android:name=".provider.SearchSuggestionProvider"/>

@@ -6,7 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 import tw.tku.tkulib.util.HttpRequestHelper;
 import tw.tku.tkulib.util.L;

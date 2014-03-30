@@ -3,10 +3,7 @@ package tw.tku.tkulib.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ScrollView;
-
-import tw.tku.tkulib.util.L;
 
 /**
  * Created by SkyArrow on 2014/3/30.

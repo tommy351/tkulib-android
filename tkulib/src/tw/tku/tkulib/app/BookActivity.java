@@ -51,6 +51,9 @@ public class BookActivity extends FragmentActivity {
     @InjectView(R.id.loading)
     ProgressBar progressBar;
 
+    @InjectView(R.id.content)
+    View contentView;
+
     @InjectView(R.id.cover)
     ImageView coverView;
 
@@ -155,6 +158,7 @@ public class BookActivity extends FragmentActivity {
     }
 
     private void showBookInfo() {
+        contentView.setVisibility(View.VISIBLE);
         titleView.setText(book.getTitle());
 
         showTextView(titleView, book.getTitle());

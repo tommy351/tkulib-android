@@ -1,36 +1,25 @@
 package tw.tku.tkulib.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 import tw.tku.tkulib.R;
-import tw.tku.tkulib.event.MainScrollEvent;
-import tw.tku.tkulib.util.L;
-import tw.tku.tkulib.widget.InfiniteScrollListener;
 import tw.tku.tkulib.widget.ObservableScrollView;
 
 public class MainActivity extends FragmentActivity {
@@ -179,6 +168,8 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void openSettings() {
-        //
+        Intent intent = new Intent(this, PrefActivity.class);
+
+        startActivity(intent);
     }
 }
