@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import tw.tku.tkulib.R;
 import tw.tku.tkulib.api.DataLoader;
 import tw.tku.tkulib.model.Book;
@@ -41,6 +43,7 @@ import tw.tku.tkulib.util.ActionBarHelper;
 import tw.tku.tkulib.util.DatabaseHelper;
 import tw.tku.tkulib.util.HttpRequestHelper;
 import tw.tku.tkulib.util.L;
+import tw.tku.tkulib.util.NetworkHelper;
 
 /**
  * Created by SkyArrow on 2014/3/29.
@@ -50,6 +53,12 @@ public class BookActivity extends FragmentActivity {
 
     @InjectView(R.id.loading)
     ProgressBar progressBar;
+
+    @InjectView(R.id.retry)
+    Button retryBtn;
+
+    @InjectView(R.id.error)
+    TextView errorView;
 
     @InjectView(R.id.content)
     View contentView;
@@ -69,11 +78,15 @@ public class BookActivity extends FragmentActivity {
     @InjectView(R.id.publisher)
     TextView publisherView;
 
+    @InjectView(R.id.location_title)
+    TextView locationTitle;
+
     @InjectView(R.id.location_list)
     ListView locationListView;
 
     private BookDao bookDao;
     private DataLoader dataLoader;
+    private NetworkHelper network;
 
     private Book book;
     private long bookId;
@@ -93,6 +106,7 @@ public class BookActivity extends FragmentActivity {
         DaoSession daoSession = daoMaster.newSession();
         bookDao = daoSession.getBookDao();
         dataLoader = DataLoader.getInstance(this);
+        network = NetworkHelper.getInstance(this);
 
         Intent intent = getIntent();
         bookId = intent.getLongExtra(EXTRA_BOOK, 0);
@@ -108,7 +122,7 @@ public class BookActivity extends FragmentActivity {
 
         book = bookDao.load(bookId);
 
-        new GetBookInfoTask().execute(bookId);
+        getBookInfo();
     }
 
     @Override
@@ -176,6 +190,7 @@ public class BookActivity extends FragmentActivity {
         locationAdapter.notifyDataSetChanged();
 
         if (locationList.size() == 0) {
+            locationTitle.setVisibility(View.GONE);
             locationListView.setVisibility(View.GONE);
         }
     }
@@ -199,6 +214,24 @@ public class BookActivity extends FragmentActivity {
         }
 
         invalidateOptionsMenu();
+    }
+
+    private void showError(int res, boolean retry) {
+        errorView.setText(res);
+        errorView.setVisibility(View.VISIBLE);
+        retryBtn.setVisibility(retry ? View.VISIBLE : View.GONE);
+    }
+
+    private void getBookInfo() {
+        if (network.isAvailable()) {
+            new GetBookInfoTask().execute(bookId);
+        } else {
+            if (book == null) {
+                showError(R.string.error_network, true);
+            } else {
+                showBookInfo();
+            }
+        }
     }
 
     private class GetBookInfoTask extends AsyncTask<Long, Integer, Book> {
@@ -277,11 +310,18 @@ public class BookActivity extends FragmentActivity {
             progressBar.setVisibility(View.GONE);
 
             if (result == null) {
-                // TODO error handling
+                showError(R.string.error_book_not_found, false);
                 return;
             }
 
             showBookInfo();
         }
+    }
+
+    @OnClick(R.id.retry)
+    public void onRetryBtn() {
+        errorView.setVisibility(View.GONE);
+        retryBtn.setVisibility(View.GONE);
+        getBookInfo();
     }
 }
