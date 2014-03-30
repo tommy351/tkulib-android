@@ -65,6 +65,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemClickLis
     private void showStarredList() {
         QueryBuilder<Book> qb = bookDao.queryBuilder();
         qb.where(BookDao.Properties.Starred.eq(true));
+        qb.orderDesc(BookDao.Properties.LastRead);
         List<Book> bookList = qb.list();
 
         if (bookList.size() == 0) {

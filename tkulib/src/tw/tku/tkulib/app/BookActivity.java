@@ -27,6 +27,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -123,6 +124,16 @@ public class BookActivity extends FragmentActivity {
         book = bookDao.load(bookId);
 
         getBookInfo();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (book != null) {
+            book.setLastRead(new Date(System.currentTimeMillis()));
+            bookDao.updateInTx(book);
+        }
     }
 
     @Override
