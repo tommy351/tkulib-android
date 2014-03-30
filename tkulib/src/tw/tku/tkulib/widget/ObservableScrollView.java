@@ -2,6 +2,7 @@ package tw.tku.tkulib.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
 
@@ -23,23 +24,14 @@ public class ObservableScrollView extends ScrollView {
         super(context, attrs, defStyle);
     }
 
-    private int threshold = 2;
+    private int threshold = 20;
     private int page = 0;
     private boolean isEnd = false;
     private boolean isLoading = false;
     private OnScrollToEndListener onScrollToEndListener;
-    private OnScrollStateChangedListener onScrollStateChangedListener;
-
-    public static final int SCROLL_STATE_FLING = AbsListView.OnScrollListener.SCROLL_STATE_FLING;
-    public static final int SCROLL_STATE_IDLE = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
-    public static final int SCROLL_STATE_TOUCH_SCROLL = AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL;
 
     public interface OnScrollToEndListener {
         void onScrollToEnd(int page);
-    }
-
-    public interface OnScrollStateChangedListener {
-        void onScrollStateChanged(int state);
     }
 
     public int getThreshold() {
@@ -62,10 +54,6 @@ public class ObservableScrollView extends ScrollView {
         this.onScrollToEndListener = onScrollToEndListener;
     }
 
-    public void setOnScrollStateChangedListener(OnScrollStateChangedListener onScrollStateChangedListener) {
-        this.onScrollStateChangedListener = onScrollStateChangedListener;
-    }
-
     public boolean isEnd() {
         return isEnd;
     }
@@ -86,6 +74,11 @@ public class ObservableScrollView extends ScrollView {
     protected void onScrollChanged(int x, int y, int oldx, int oldy) {
         super.onScrollChanged(x, y, oldx, oldy);
 
-        //L.d("%d, %d, %d, %d", x, y, oldx, oldy);
+        View view = getChildAt(getChildCount() - 1);
+        int diff = view.getBottom() - (getHeight() + getScrollY());
+
+        if (onScrollToEndListener != null && !isEnd && !isLoading && diff > threshold) {
+            onScrollToEndListener.onScrollToEnd(++page);
+        }
     }
 }

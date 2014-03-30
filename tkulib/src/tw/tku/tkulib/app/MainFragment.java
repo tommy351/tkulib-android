@@ -1,11 +1,13 @@
 package tw.tku.tkulib.app;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 
@@ -25,20 +27,20 @@ import tw.tku.tkulib.util.DatabaseHelper;
 /**
  * Created by SkyArrow on 2014/3/29.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements AdapterView.OnItemClickListener {
     public static final String TAG = "MainFragment";
 
     @InjectView(R.id.starred)
     View starView;
 
     @InjectView(R.id.starred_list)
-    GridView starList;
+    ListView starList;
 
     @InjectView(R.id.history)
     View historyView;
 
     @InjectView(R.id.history_list)
-    GridView historyList;
+    ListView historyList;
 
     private BookDao bookDao;
 
@@ -52,6 +54,9 @@ public class MainFragment extends Fragment {
         DaoMaster daoMaster = new DaoMaster(db);
         DaoSession daoSession = daoMaster.newSession();
         bookDao = daoSession.getBookDao();
+
+        starList.setOnItemClickListener(this);
+        historyList.setOnItemClickListener(this);
 
         showStarredList();
         showHistoryList();
@@ -67,7 +72,7 @@ public class MainFragment extends Fragment {
         if (bookList.size() == 0) {
             starView.setVisibility(View.GONE);
         } else {
-            MainListAdapter adapter = new MainListAdapter(getActivity(), bookList);
+            SearchListAdapter adapter = new SearchListAdapter(getActivity(), bookList);
             starList.setAdapter(adapter);
         }
     }
@@ -80,8 +85,20 @@ public class MainFragment extends Fragment {
         if (bookList.size() == 0) {
             historyView.setVisibility(View.GONE);
         } else {
-            MainListAdapter adapter = new MainListAdapter(getActivity(), bookList);
+            SearchListAdapter adapter = new SearchListAdapter(getActivity(), bookList);
             historyList.setAdapter(adapter);
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Book book = (Book) adapterView.getAdapter().getItem(i);
+
+        if (book == null) return;
+
+        Intent intent = new Intent(getActivity(), BookActivity.class);
+
+        intent.putExtra(BookActivity.EXTRA_BOOK, book.getId());
+        startActivity(intent);
     }
 }

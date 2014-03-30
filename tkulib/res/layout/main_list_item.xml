@@ -13,6 +13,6 @@
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:fontFamily="sans-serif-light"
-        android:textSize="@dimen/text_size_medium"
+        android:ellipsize="end"
         android:padding="@dimen/margin_small"/>
 </LinearLayout>

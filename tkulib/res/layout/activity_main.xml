@@ -1,39 +1,41 @@
-<tw.tku.tkulib.widget.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scroll_view"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
+    <tw.tku.tkulib.widget.ObservableScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_card">
-            <SearchView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/search"
-                android:queryHint="@string/search_hint"
-                android:iconifiedByDefault="false"
-                android:layout_toLeftOf="@+id/overflow"/>
-            <ImageButton
-                android:id="@+id/overflow"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_overflow"
-                android:background="@android:color/transparent"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:paddingRight="@dimen/margin_small"/>
-        </RelativeLayout>
+        android:layout_height="match_parent">
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_huge"/>
+            android:paddingTop="80dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"/>
+    </tw.tku.tkulib.widget.ObservableScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_card"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search"
+            android:queryHint="@string/search_hint"
+            android:iconifiedByDefault="false"
+            android:layout_toLeftOf="@+id/overflow"/>
+        <ImageButton
+            android:id="@+id/overflow"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_overflow"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/margin_small"/>
     </RelativeLayout>
-</tw.tku.tkulib.widget.ObservableScrollView>
+</RelativeLayout>

@@ -22,4 +22,5 @@
 
     <string name="error_network">No network connection</string>
     <string name="error_book_not_found">Book not found</string>
+    <string name="error_other">Oops! Something got wrong!</string>
 </resources>

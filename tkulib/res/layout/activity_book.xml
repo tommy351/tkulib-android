@@ -68,7 +68,8 @@
                 android:id="@+id/location_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card"/>
+                android:background="@drawable/bg_card"
+                android:listSelector="@android:color/transparent"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

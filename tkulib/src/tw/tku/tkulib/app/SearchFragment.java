@@ -29,13 +29,16 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 import tw.tku.tkulib.Constant;
 import tw.tku.tkulib.R;
+import tw.tku.tkulib.event.MainScrollEvent;
 import tw.tku.tkulib.model.Book;
 import tw.tku.tkulib.util.HttpRequestHelper;
 import tw.tku.tkulib.util.L;
 import tw.tku.tkulib.util.NetworkHelper;
 import tw.tku.tkulib.widget.InfiniteScrollListener;
+import tw.tku.tkulib.widget.ObservableScrollView;
 
 /**
  * Created by SkyArrow on 2014/3/29.
@@ -67,6 +70,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.inject(this, view);
+        EventBus.getDefault().register(this);
 
         Bundle args = getArguments();
         String keyword = args.getString(EXTRA_KEYWORD);
@@ -99,6 +103,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
 
         if (task != null && !task.isCancelled()) {
             task.cancel(true);
@@ -123,7 +128,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
     private void getBookList(int page) {
         if (network.isAvailable()) {
-//            task = new GetBookListTask();
             task.execute(page);
         } else {
             currentPage = page;
@@ -143,7 +147,17 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         startActivity(intent);
     }
 
+    public void onEvent(MainScrollEvent event) {
+        //getBookList(event.getPage() + 1);
+    }
+
+    private ObservableScrollView getScrollView() {
+        return ((MainActivity) getActivity()).getScrollView();
+    }
+
     private void showError(int res, boolean retry) {
+        getScrollView().setLoading(true);
+        footer.setVisibility(View.VISIBLE);
         footerError.setVisibility(View.VISIBLE);
         footerError.setText(res);
 
@@ -151,6 +165,8 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
     private void setLoading(boolean loading) {
+        getScrollView().setLoading(loading);
+        footer.setVisibility(loading ? View.VISIBLE : View.GONE);
         footerProgressBar.setVisibility(loading ? View.VISIBLE : View.INVISIBLE);
     }
 
@@ -187,6 +203,10 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
                     list.add(book);
                 }
 
+                if (list.size() < 20) {
+                    getScrollView().setEnd(true);
+                }
+
                 return list;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -203,10 +223,14 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         @Override
         protected void onPostExecute(List<Book> books) {
             if (books == null) {
-                showError(R.string.error_book_not_found, false);
+                showError(R.string.error_other, false);
             } else {
                 bookList.addAll(books);
                 adapter.notifyDataSetChanged();
+
+                if (bookList.size() == 0) {
+                    showError(R.string.error_book_not_found, false);
+                }
             }
 
             setLoading(false);
